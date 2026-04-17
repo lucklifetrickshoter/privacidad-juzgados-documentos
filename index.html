@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Plataforma de Censura Judicial - Protección automática de datos personales en documentos Word. 100% local, sin internet.">
+    <title>CensuraDoc — Protección de Datos Judiciales</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="brand">
+                <div class="brand-logo">
+                    <i class="fa-solid fa-scale-balanced"></i>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-name">CensuraDoc</span>
+                    <span class="brand-tagline">Juzgados · Privacidad · Confianza</span>
+                </div>
+            </div>
+            <div class="header-badges">
+                <span class="badge badge-secure"><i class="fa-solid fa-lock"></i> 100% Local</span>
+                <button id="theme-toggle" class="theme-btn" aria-label="Cambiar tema">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <h1>Censura Automática de<br><span class="gradient-text">Datos Personales</span></h1>
+            <p class="hero-subtitle">Sube tu documento Word (.docx), detectamos y censuramos automáticamente: <strong>nombres, CURPs, RFCs, fechas, domicilios, teléfonos</strong> y más. Sin servidores, sin internet, 100% privado.</p>
+        </section>
+
+        <!-- MAIN TOOL CARD -->
+        <section class="tool-card" id="tool-card">
+
+            <!-- STEP 1: DROP ZONE -->
+            <div id="step-upload" class="step step-active">
+                <div id="drop-area" class="drop-zone">
+                    <div class="drop-zone-content">
+                        <div class="drop-icon-wrapper">
+                            <i class="fa-solid fa-file-word drop-icon"></i>
+                            <div class="drop-icon-ring"></div>
+                        </div>
+                        <h2>Arrastra tu documento aquí</h2>
+                        <p>o selecciónalo desde tu equipo</p>
+                        <input type="file" id="file-input" accept=".docx" hidden>
+                        <button id="browse-btn" class="btn btn-primary btn-lg" onclick="document.getElementById('file-input').click()">
+                            <i class="fa-solid fa-folder-open"></i> Explorar archivos
+                        </button>
+                        <p class="format-note"><i class="fa-regular fa-circle-info"></i> Solo se aceptan archivos <strong>.docx</strong> de Microsoft Word</p>
+                    </div>
+                </div>
+                <div id="error-banner" class="error-banner hidden">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span id="error-text"></span>
+                </div>
+            </div>
+
+            <!-- STEP 2: PROCESSING -->
+            <div id="step-processing" class="step hidden">
+                <div class="processing-view">
+                    <div class="file-pill">
+                        <i class="fa-solid fa-file-word"></i>
+                        <span id="file-name-display">documento.docx</span>
+                    </div>
+                    <div class="progress-section">
+                        <div class="progress-header">
+                            <span id="progress-label" class="progress-label">Iniciando análisis...</span>
+                            <span id="progress-pct" class="progress-pct">0%</span>
+                        </div>
+                        <div class="progress-track">
+                            <div id="progress-bar" class="progress-bar-fill"></div>
+                        </div>
+                    </div>
+                    <div class="scan-animation">
+                        <div class="scan-line"></div>
+                        <div class="scan-item"><i class="fa-solid fa-user-shield"></i> Buscando nombres...</div>
+                        <div class="scan-item"><i class="fa-solid fa-id-card"></i> Analizando CURPs y RFCs...</div>
+                        <div class="scan-item"><i class="fa-solid fa-calendar-days"></i> Detectando fechas...</div>
+                        <div class="scan-item"><i class="fa-solid fa-location-dot"></i> Identificando domicilios...</div>
+                        <div class="scan-item"><i class="fa-solid fa-phone"></i> Rastreando teléfonos...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 3: RESULTS -->
+            <div id="step-results" class="step hidden">
+                <div class="results-view">
+                    <div class="success-banner">
+                        <div class="success-icon"><i class="fa-solid fa-shield-check"></i></div>
+                        <div>
+                            <h3>¡Documento censurado con éxito!</h3>
+                            <p id="stats-summary">Se encontraron y censuraron datos personales.</p>
+                        </div>
+                    </div>
+
+                    <!-- STATS GRID -->
+                    <div class="stats-grid" id="stats-grid">
+                        <div class="stat-chip" id="stat-names">
+                            <i class="fa-solid fa-user"></i>
+                            <div class="stat-info">
+                                <span class="stat-count" id="count-names">0</span>
+                                <span class="stat-label">Nombres</span>
+                            </div>
+                        </div>
+                        <div class="stat-chip" id="stat-curp">
+                            <i class="fa-solid fa-id-card"></i>
+                            <div class="stat-info">
+                                <span class="stat-count" id="count-curp">0</span>
+                                <span class="stat-label">CURPs</span>
+                            </div>
+                        </div>
+                        <div class="stat-chip" id="stat-rfc">
+                            <i class="fa-solid fa-file-invoice"></i>
+                            <div class="stat-info">
+                                <span class="stat-count" id="count-rfc">0</span>
+                                <span class="stat-label">RFCs</span>
+                            </div>
+                        </div>
+                        <div class="stat-chip" id="stat-dates">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            <div class="stat-info">
+                                <span class="stat-count" id="count-dates">0</span>
+                                <span class="stat-label">Fechas</span>
+                            </div>
+                        </div>
+                        <div class="stat-chip" id="stat-phones">
+                            <i class="fa-solid fa-phone"></i>
+                            <div class="stat-info">
+                                <span class="stat-count" id="count-phones">0</span>
+                                <span class="stat-label">Teléfonos</span>
+                            </div>
+                        </div>
+                        <div class="stat-chip" id="stat-emails">
+                            <i class="fa-solid fa-envelope"></i>
+                            <div class="stat-info">
+                                <span class="stat-count" id="count-emails">0</span>
+                                <span class="stat-label">Correos</span>
+                            </div>
+                        </div>
+                        <div class="stat-chip" id="stat-addr">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <div class="stat-info">
+                                <span class="stat-count" id="count-addr">0</span>
+                                <span class="stat-label">Domicilios</span>
+                            </div>
+                        </div>
+                        <div class="stat-chip stat-total">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <div class="stat-info">
+                                <span class="stat-count" id="count-total">0</span>
+                                <span class="stat-label">Total</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- REDACTION MODE TOGGLE -->
+                    <div class="mode-selector">
+                        <p class="mode-label"><i class="fa-solid fa-paintbrush"></i> Modo de censura en el documento:</p>
+                        <div class="mode-tabs">
+                            <button class="mode-tab active" data-mode="block" id="mode-block">
+                                <span class="mode-preview-block">████████</span>
+                                <span>Barra negra</span>
+                            </button>
+                            <button class="mode-tab" data-mode="bold" id="mode-bold">
+                                <span class="mode-preview-bold">[DATOS PERSONALES]</span>
+                                <span>Etiqueta negrita</span>
+                            </button>
+                            <button class="mode-tab" data-mode="asterisk" id="mode-asterisk">
+                                <span class="mode-preview-asterisk">••••••••</span>
+                                <span>Puntos</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ACTIONS -->
+                    <div class="result-actions">
+                        <button id="download-btn" class="btn btn-success btn-lg btn-full">
+                            <i class="fa-solid fa-download"></i> Descargar Documento Censurado
+                        </button>
+                        <button id="reset-btn" class="btn btn-outline btn-lg btn-full">
+                            <i class="fa-solid fa-rotate-left"></i> Censurar otro documento
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- HOW IT WORKS -->
+        <section class="features-section">
+            <h2 class="section-title">¿Cómo funciona?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon fc-blue"><i class="fa-solid fa-lock"></i></div>
+                    <h3>Privacidad Total</h3>
+                    <p>Todo se procesa dentro de tu navegador. Ningún documento sale de tu computadora. Cero servidores, cero riesgo.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon fc-green"><i class="fa-solid fa-magnifying-glass"></i></div>
+                    <h3>Detección Inteligente</h3>
+                    <p>Detecta: nombres completos, CURPs, RFCs, fechas de nacimiento, números telefónicos, correos electrónicos y domicilios.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon fc-purple"><i class="fa-solid fa-file-word"></i></div>
+                    <h3>Conserva el Formato</h3>
+                    <p>El archivo descargado mantiene estilos, tablas, imágenes y estructura original del documento Word.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon fc-orange"><i class="fa-solid fa-bolt"></i></div>
+                    <h3>Súper Rápido</h3>
+                    <p>El análisis es instantáneo. Sin esperas, sin cargas, sin limitaciones de tamaño de archivo.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- WHAT IT DETECTS -->
+        <section class="detects-section">
+            <h2 class="section-title">¿Qué datos detecta y censura?</h2>
+            <div class="detects-grid">
+                <div class="detect-item">
+                    <i class="fa-solid fa-user-secret"></i>
+                    <div>
+                        <strong>Nombres de personas</strong>
+                        <span>Nombres y apellidos completos (heurística contextual)</span>
+                    </div>
+                </div>
+                <div class="detect-item">
+                    <i class="fa-solid fa-id-card-clip"></i>
+                    <div>
+                        <strong>CURP Mexicana</strong>
+                        <span>Clave Única de Registro de Población (18 caracteres)</span>
+                    </div>
+                </div>
+                <div class="detect-item">
+                    <i class="fa-solid fa-receipt"></i>
+                    <div>
+                        <strong>RFC</strong>
+                        <span>Registro Federal de Contribuyentes (12-13 caracteres)</span>
+                    </div>
+                </div>
+                <div class="detect-item">
+                    <i class="fa-solid fa-calendar-day"></i>
+                    <div>
+                        <strong>Fechas de nacimiento</strong>
+                        <span>Varios formatos: DD/MM/AAAA, D de mes de AAAA, etc.</span>
+                    </div>
+                </div>
+                <div class="detect-item">
+                    <i class="fa-solid fa-map-pin"></i>
+                    <div>
+                        <strong>Domicilios y direcciones</strong>
+                        <span>Calle, número, colonia, municipio, código postal</span>
+                    </div>
+                </div>
+                <div class="detect-item">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+                    <div>
+                        <strong>Números telefónicos</strong>
+                        <span>10 dígitos locales, formato internacional, con guiones</span>
+                    </div>
+                </div>
+                <div class="detect-item">
+                    <i class="fa-solid fa-at"></i>
+                    <div>
+                        <strong>Correos electrónicos</strong>
+                        <span>Cualquier formato estándar de email</span>
+                    </div>
+                </div>
+                <div class="detect-item">
+                    <i class="fa-solid fa-hashtag"></i>
+                    <div>
+                        <strong>NSS / IMSS</strong>
+                        <span>Números de seguridad social (11 dígitos)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DISCLAIMER -->
+        <section class="disclaimer">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <div>
+                <strong>Revisión humana recomendada:</strong> La herramienta usa análisis automático (patrones y heurística) y tiene una alta efectividad, pero no garantiza el 100% de los casos. Te recomendamos revisar el documento censurado antes de compartirlo, especialmente nombres compuestos o inusuales.
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <p>CensuraDoc — Herramienta de privacidad para juzgados y abogados · Procesamiento 100% local</p>
+    </footer>
+
+    <!-- JSZip: primero local (funciona sin internet / USB), luego CDN como respaldo -->
+    <script src="jszip.min.js"></script>
+    <script>
+        if (typeof JSZip === 'undefined') {
+            // Fallback a CDN si el archivo local no está disponible
+            var s = document.createElement('script');
+            s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+            document.head.appendChild(s);
+        }
+    </script>
+    <script src="logic.js"></script>
+</body>
+</html>
