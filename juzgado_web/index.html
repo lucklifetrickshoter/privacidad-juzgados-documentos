@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Censura Judicial</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome para íconos -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Archivo de estilos principal -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-decor"></div>
+    
+    <main class="container">
+        <header>
+            <div class="logo-container">
+                <i class="fa-solid fa-scale-balanced logo-icon"></i>
+            </div>
+            <h1>Plataforma de Censura Judicial</h1>
+            <p class="subtitle">Protección de Datos Personales en Documentos Legales</p>
+        </header>
+
+        <section class="upload-card">
+            <div id="drop-area" class="drop-area">
+                <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                <h2>Arrastra y suelta tu documento Word aquí</h2>
+                <p>o</p>
+                <input type="file" id="file-input" accept=".docx" hidden>
+                <button type="button" class="btn primary" onclick="document.getElementById('file-input').click()">
+                    <i class="fa-solid fa-folder-open"></i> Explorar en el equipo
+                </button>
+                <p class="format-info">Solo se admiten documentos Microsoft Word (.docx)</p>
+            </div>
+            
+            <div id="upload-status" class="status-container hidden">
+                <div class="file-info">
+                    <i class="fa-solid fa-file-word file-icon"></i>
+                    <span id="file-name">documento.docx</span>
+                </div>
+                
+                <div class="progress-wrapper">
+                    <p id="status-text" class="status-text">Analizando y censurando documento...</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+                
+                <p id="error-message" class="error-message hidden"></p>
+                
+                <div class="actions hidden" id="action-buttons">
+                    <button id="download-btn" class="btn success"><i class="fa-solid fa-download"></i> Descargar Documento Listo</button>
+                    <button id="reset-btn" class="btn secondary"><i class="fa-solid fa-rotate-left"></i> Censurar Otro Documento</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="info-layout">
+            <div class="info-card alert-card">
+                <i class="fa-solid fa-shield-halved"></i>
+                <div>
+                    <h3>Privacidad Total (100% Local)</h3>
+                    <p>Esta plataforma funciona <strong>sin internet</strong> una vez abierta. Tus documentos jamás salen de esta computadora local, garantizando el secreto profesional del juzgado.</p>
+                </div>
+            </div>
+            <div class="info-card">
+                <i class="fa-solid fa-robot"></i>
+                <div>
+                    <h3>¿Qué detecta la plataforma?</h3>
+                    <p>Busca y bloquea automáticamente con barras negras (██████): Nombres de personas, CURPs, RFCs, Correos electrónicos y Números telefónicos.</p>
+                </div>
+            </div>
+            <div class="info-card warning-card">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <div>
+                    <h3>Ojo de Buen Cubero</h3>
+                    <p>La protección es muy veloz pero no es perfecta. Siempre da una leída rápida al documento censurado descargado para asegurar que no se haya escapado algún nombre raro.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Librería JSZip para descomprimir y comprimir .docx automágicamente local -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="logic.js"></script>
+</body>
+</html>
